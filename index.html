@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PlayLab</title>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1b1a18;--mute:#75706a;--acc:#6d28d9;--line:#e6e1d8;--ok:#15803d;--bad:#b91c1c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121116;--card:#1c1b22;--ink:#f1eff6;--mute:#a09bad;--acc:#a78bfa;--line:#2b2935;--ok:#4ade80;--bad:#f87171}}
+:root[data-theme="dark"]{--bg:#121116;--card:#1c1b22;--ink:#f1eff6;--mute:#a09bad;--acc:#a78bfa;--line:#2b2935;--ok:#4ade80;--bad:#f87171}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.45}
+main{max-width:680px;margin:0 auto;padding:24px 18px 60px}
+h1{font-size:2.3rem;margin:0;letter-spacing:-.02em}h1 span{color:var(--acc)}
+.sub{color:var(--mute);margin:4px 0 20px}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;cursor:pointer;text-align:left;color:var(--ink);font:inherit}
+.tile .e{font-size:1.8rem}.tile b{display:block;margin-top:6px}.tile small{color:var(--mute)}
+.tag{display:inline-block;font-size:.7rem;padding:2px 8px;border-radius:99px;background:var(--line);color:var(--mute);margin-top:6px}
+.back{background:none;border:0;color:var(--acc);font:inherit;cursor:pointer;padding:0 0 12px;font-weight:600}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;text-align:center}
+.panel h2{margin:0 0 4px}.hint{color:var(--mute);margin:0 0 16px}
+button.go{font:inherit;font-weight:700;padding:12px 22px;border:0;border-radius:12px;background:var(--acc);color:var(--bg);cursor:pointer}
+input[type=text],input[type=number]{font:inherit;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%}
+.zone{height:200px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;cursor:pointer;user-select:none;color:#fff;background:#475569}
+.zone.wait{background:#b91c1c}.zone.now{background:#15803d}
+.big{font-size:2.4rem;font-weight:800;color:var(--acc);font-variant-numeric:tabular-nums}
+.q{font-size:2.2rem;font-weight:800;margin:10px 0}
+.best{color:var(--mute);margin-top:12px;font-size:.9rem}
+textarea{font:inherit;width:100%;min-height:90px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);margin-bottom:12px}
+#wheelwrap{position:relative;width:260px;margin:10px auto}
+#wheel{width:260px;height:260px;border-radius:50%;transition:transform 4s cubic-bezier(.12,.7,.1,1)}
+#pin{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:1.6rem}
+.fact{font-size:1.25rem;min-height:110px;display:flex;align-items:center;justify-content:center;margin:6px 0 16px}
+.view{display:none}.view.on{display:block}
+</style>
+</head>
+<body>
+<main>
+<section class="view on" id="home">
+<h1>Play<span>Lab</span></h1>
+<p class="sub">Tiny games and curious tools. Nothing to install, nothing to sign up for.</p>
+<div class="tiles">
+<button class="tile" data-go="reaction"><span class="e">⚡</span><b>Reaction Test</b><small>How fast are your reflexes?</small><br><span class="tag">Fun</span></button>
+<button class="tile" data-go="math"><span class="e">🧮</span><b>Math Sprint</b><small>30 seconds, as many as you can</small><br><span class="tag">Educational</span></button>
+<button class="tile" data-go="facts"><span class="e">🌍</span><b>Mind-Blowers</b><small>True facts that sound fake</small><br><span class="tag">Informative</span></button>
+<button class="tile" data-go="spinner"><span class="e">🎡</span><b>Decision Wheel</b><small>Can’t choose? Let fate do it</small><br><span class="tag">Outside the box</span></button>
+<button class="tile" data-go="days"><span class="e">⏳</span><b>Days Alive</b><small>Your life in numbers</small><br><span class="tag">Informative</span></button>
+</div>
+</section>
+
+<section class="view" id="reaction"><button class="back" data-go="home">← All games</button>
+<div class="panel"><h2>Reaction Test</h2><p class="hint">Click the box when it turns green.</p>
+<div class="zone" id="rz">Click to start</div><div class="best" id="rbest"></div></div></section>
+
+<section class="view" id="math"><button class="back" data-go="home">← All games</button>
+<div class="panel"><h2>Math Sprint</h2><p class="hint">Type the answer and press Enter.</p>
+<div id="mstat" class="hint"></div><div class="q" id="mq">Ready?</div>
+<input type="number" id="ma" inputmode="numeric" disabled placeholder="Answer">
+<p><button class="go" id="mgo">Start</button></p><div class="best" id="mbest"></div></div></section>
+
+<section class="view" id="facts"><button class="back" data-go="home">← All games</button>
+<div class="panel"><h2>Mind-Blowers</h2><div class="fact" id="ft"></div>
+<button class="go" id="fn">Another one</button></div></section>
+
+<section class="view" id="spinner"><button class="back" data-go="home">← All games</button>
+<div class="panel"><h2>Decision Wheel</h2><p class="hint">One option per line.</p>
+<textarea id="opts">Pizza
+Biryani
+Dosa
+Burger</textarea>
+<div id="wheelwrap"><div id="pin">▼</div><canvas id="wheel" width="520" height="520"></canvas></div>
+<button class="go" id="sp">Spin</button><div class="big" id="sres" style="font-size:1.6rem;margin-top:12px"></div></div></section>
+
+<section class="view" id="days"><button class="back" data-go="home">← All games</button>
+<div class="panel"><h2>Days Alive</h2><p class="hint">Enter your birthday.</p>
+<input type="date" id="dob" style="font:inherit;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%;margin-bottom:12px">
+<button class="go" id="dgo">Show me</button><div id="dres" style="margin-top:16px"></div></div></section>
+</main>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var views=['home','reaction','math','facts','spinner','days'];
+function route(){var h=(location.hash||'#home').slice(1);if(views.indexOf(h)<0)h='home';
+views.forEach(function(v){$(v).classList.toggle('on',v===h)});window.scrollTo(0,0);if(h!=='math')stopMath()}
+window.addEventListener('hashchange',route);
+document.addEventListener('click',function(e){var t=e.target.closest('[data-go]');if(t)location.hash=t.getAttribute('data-go')});
+function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function save(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+/* Reaction */
+var rz=$('rz'),rt=null,rs=0,rstate=0;
+function rbest(){var b=load('pl-r');$('rbest').textContent=b?'Your best: '+b+' ms':''}
+rbest();
+rz.onclick=function(){
+if(rstate===0){rstate=1;rz.className='zone wait';rz.textContent='Wait for green…';rt=setTimeout(function(){rstate=2;rz.className='zone now';rz.textContent='CLICK!';rs=performance.now()},1500+Math.random()*2500)}
+else if(rstate===1){clearTimeout(rt);rstate=0;rz.className='zone';rz.textContent='Too early! Click to retry'}
+else{var ms=Math.round(performance.now()-rs);rstate=0;rz.className='zone';rz.textContent=ms+' ms. Click to try again';var b=+load('pl-r')||9999;if(ms<b){save('pl-r',ms)}rbest()}
+};
+
+/* Math */
+var mt=null,mans=0,msc=0,mleft=30;
+function stopMath(){clearInterval(mt);mt=null;$('ma').disabled=true}
+function nextQ(){var a=2+Math.floor(Math.random()*12),b=2+Math.floor(Math.random()*12),o=Math.floor(Math.random()*3);
+if(o===0){mans=a+b;$('mq').textContent=a+' + '+b}else if(o===1){if(b>a){var t=a;a=b;b=t}mans=a-b;$('mq').textContent=a+' − '+b}else{mans=a*b;$('mq').textContent=a+' × '+b}
+$('ma').value='';$('ma').focus()}
+$('mgo').onclick=function(){stopMath();msc=0;mleft=30;$('ma').disabled=false;$('mstat').textContent='Time: 30  Score: 0';nextQ();
+mt=setInterval(function(){mleft--;$('mstat').textContent='Time: '+mleft+'  Score: '+msc;
+if(mleft<=0){stopMath();$('mq').textContent='Score: '+msc;var b=+load('pl-m')||0;if(msc>b)save('pl-m',msc);$('mbest').textContent='Your best: '+Math.max(b,msc);$('mgo').textContent='Play again'}},1000)};
+$('ma').addEventListener('keydown',function(e){if(e.key==='Enter'&&mt&&$('ma').value!==''){if(+$('ma').value===mans)msc++;$('mstat').textContent='Time: '+mleft+'  Score: '+msc;nextQ()}});
+var mb=load('pl-m');if(mb)$('mbest').textContent='Your best: '+mb;
+
+/* Facts */
+var F=['Honey found in ancient Egyptian tombs, around 3,000 years old, was still edible. Properly sealed honey barely spoils.',
+'Octopuses have three hearts and blue blood.',
+'A day on Venus (one full spin) lasts longer than its year. It takes about 243 Earth days to rotate but only about 225 to orbit the Sun.',
+'Botanically, bananas are berries, but strawberries are not.',
+'Oxford University was already teaching before the Aztec city of Tenochtitlan was founded.',
+'Sunlight takes about 8 minutes and 20 seconds to reach Earth.',
+'Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid.',
+'Sharks are older than trees. They have existed for over 400 million years.',
+'Wombats produce cube-shaped droppings.',
+'Tamil is one of the world’s oldest living languages, with literature going back over 2,000 years.',
+'Your body contains roughly 37 trillion cells.'];
+var fi=-1;function nf(){var n;do{n=Math.floor(Math.random()*F.length)}while(n===fi);fi=n;$('ft').textContent=F[n]}
+$('fn').onclick=nf;nf();
+
+/* Wheel */
+var wc=$('wheel'),cx=wc.getContext('2d'),rot=0,spinning=false;
+var COL=['#6d28d9','#0ea5e9','#f59e0b','#10b981','#ef4444','#ec4899','#14b8a6','#8b5cf6'];
+function opts(){return $('opts').value.split('\n').map(function(s){return s.trim()}).filter(Boolean).slice(0,12)}
+function draw(){var o=opts(),n=o.length||1,r=260;cx.clearRect(0,0,520,520);
+for(var i=0;i<n;i++){var a0=i*2*Math.PI/n-Math.PI/2,a1=(i+1)*2*Math.PI/n-Math.PI/2;
+cx.beginPath();cx.moveTo(r,r);cx.arc(r,r,r-4,a0,a1);cx.fillStyle=COL[i%COL.length];cx.fill();
+cx.save();cx.translate(r,r);cx.rotate((a0+a1)/2);cx.fillStyle='#fff';cx.font='bold 26px system-ui,sans-serif';cx.textAlign='right';cx.fillText((o[i]||'').slice(0,14),r-24,9);cx.restore()}}
+$('opts').addEventListener('input',draw);draw();
+$('sp').onclick=function(){var o=opts();if(o.length<2||spinning)return;spinning=true;$('sres').textContent='';
+var n=o.length,win=Math.floor(Math.random()*n),seg=360/n;
+var target=360*6+(360-(win*seg+seg/2));rot=Math.ceil(rot/360)*360+target;
+wc.style.transform='rotate('+rot+'deg)';
+setTimeout(function(){spinning=false;$('sres').textContent='🎉 '+o[win]},4100)};
+
+/* Days alive */
+$('dgo').onclick=function(){var v=$('dob').value;if(!v)return;var p=v.split('-'),b=new Date(+p[0],+p[1]-1,+p[2]),d=(Date.now()-b)/86400000;
+if(d<0)return;var nx=Math.ceil((d+1)/1000)*1000;
+$('dres').innerHTML='';var big=document.createElement('div');big.className='big';big.textContent=Math.floor(d).toLocaleString('en-US')+' days';
+var s=document.createElement('p');s.className='hint';s.textContent='About '+Math.floor(d*24*60*75).toLocaleString('en-US')+' heartbeats and '+Math.floor(d/29.53)+' full moons so far. Your '+nx.toLocaleString('en-US')+'th day is in '+(nx-Math.floor(d))+' days.';
+$('dres').appendChild(big);$('dres').appendChild(s)};
+route();
+})();
+</script>
+</body>
+</html>
