@@ -5,149 +5,166 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>PlayLab</title>
 <style>
-:root{--bg:#f6f4ef;--card:#fff;--ink:#1b1a18;--mute:#75706a;--acc:#6d28d9;--line:#e6e1d8;--ok:#15803d;--bad:#b91c1c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121116;--card:#1c1b22;--ink:#f1eff6;--mute:#a09bad;--acc:#a78bfa;--line:#2b2935;--ok:#4ade80;--bad:#f87171}}
-:root[data-theme="dark"]{--bg:#121116;--card:#1c1b22;--ink:#f1eff6;--mute:#a09bad;--acc:#a78bfa;--line:#2b2935;--ok:#4ade80;--bad:#f87171}
+:root{--bg:#f7f5ff;--card:#fff;--ink:#17152b;--mute:#6f6b88;--acc:#7c3aed;--line:#e5e1f5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f0d1c;--card:#1a1730;--ink:#f1eeff;--mute:#a29dc4;--acc:#a78bfa;--line:#2c2850}}
+:root[data-theme="dark"]{--bg:#0f0d1c;--card:#1a1730;--ink:#f1eeff;--mute:#a29dc4;--acc:#a78bfa;--line:#2c2850}
 *{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.45}
-main{max-width:680px;margin:0 auto;padding:24px 18px 60px}
-h1{font-size:2.3rem;margin:0;letter-spacing:-.02em}h1 span{color:var(--acc)}
-.sub{color:var(--mute);margin:4px 0 20px}
-.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;cursor:pointer;text-align:left;color:var(--ink);font:inherit}
-.tile .e{font-size:1.8rem}.tile b{display:block;margin-top:6px}.tile small{color:var(--mute)}
-.tag{display:inline-block;font-size:.7rem;padding:2px 8px;border-radius:99px;background:var(--line);color:var(--mute);margin-top:6px}
-.back{background:none;border:0;color:var(--acc);font:inherit;cursor:pointer;padding:0 0 12px;font-weight:600}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;text-align:center}
-.panel h2{margin:0 0 4px}.hint{color:var(--mute);margin:0 0 16px}
-button.go{font:inherit;font-weight:700;padding:12px 22px;border:0;border-radius:12px;background:var(--acc);color:var(--bg);cursor:pointer}
-input[type=text],input[type=number]{font:inherit;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%}
-.zone{height:200px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;cursor:pointer;user-select:none;color:#fff;background:#475569}
-.zone.wait{background:#b91c1c}.zone.now{background:#15803d}
-.big{font-size:2.4rem;font-weight:800;color:var(--acc);font-variant-numeric:tabular-nums}
-.q{font-size:2.2rem;font-weight:800;margin:10px 0}
+main{max-width:760px;margin:0 auto;padding:28px 16px 70px}
+h1{font-size:clamp(2.6rem,10vw,4rem);margin:0;letter-spacing:-.04em;line-height:1}
+h1 span{background:linear-gradient(90deg,#7c3aed,#ec4899,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mute);font-size:1.1rem;margin:10px 0 24px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.tile{position:relative;overflow:hidden;border:0;border-radius:20px;padding:18px;cursor:pointer;text-align:left;color:#fff;font:inherit;min-height:150px;background:linear-gradient(135deg,var(--c1),var(--c2));transition:transform .18s,box-shadow .18s;box-shadow:0 6px 18px -8px var(--c1)}
+.tile:hover{transform:translateY(-5px) rotate(-.6deg);box-shadow:0 14px 26px -10px var(--c1)}
+.tile .e{font-size:2.6rem;display:block;transition:transform .25s}.tile:hover .e{transform:scale(1.25) rotate(8deg)}
+.tile b{display:block;font-size:1.2rem;margin-top:8px}.tile small{opacity:.9}
+.tag{position:absolute;top:12px;right:12px;font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:99px;background:rgba(255,255,255,.25)}
+.back{background:none;border:0;color:var(--acc);font:inherit;cursor:pointer;padding:0 0 14px;font-weight:700}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;text-align:center;animation:pop .3s}
+@keyframes pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.panel h2{margin:0 0 4px;font-size:1.6rem}.hint{color:var(--mute);margin:0 0 16px}
+button.go{font:inherit;font-weight:700;padding:13px 24px;border:0;border-radius:14px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;cursor:pointer;transition:transform .12s}
+button.go:active{transform:scale(.95)}
+input,textarea{font:inherit;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);width:100%}
+textarea{min-height:90px;margin-bottom:12px}
+.zone{height:210px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;cursor:pointer;user-select:none;color:#fff;background:#475569;transition:background .1s}
+.zone.wait{background:#dc2626}.zone.now{background:#16a34a}
+.big{font-size:2.6rem;font-weight:900;color:var(--acc);font-variant-numeric:tabular-nums}
 .best{color:var(--mute);margin-top:12px;font-size:.9rem}
-textarea{font:inherit;width:100%;min-height:90px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);margin-bottom:12px}
-#wheelwrap{position:relative;width:260px;margin:10px auto}
-#wheel{width:260px;height:260px;border-radius:50%;transition:transform 4s cubic-bezier(.12,.7,.1,1)}
-#pin{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:1.6rem}
-.fact{font-size:1.25rem;min-height:110px;display:flex;align-items:center;justify-content:center;margin:6px 0 16px}
+.fact{font-size:1.3rem;min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:6px 0 16px;gap:10px}
+.fact .e{font-size:3rem}
 .view{display:none}.view.on{display:block}
+#wheelwrap{position:relative;width:260px;margin:10px auto}
+#wheel{width:260px;height:260px;border-radius:50%;transition:transform 4s cubic-bezier(.12,.7,.1,1);box-shadow:0 8px 24px -8px #0006}
+#pin{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:1.7rem;z-index:2}
+.opt{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0 14px}
+.opt button{font:inherit;padding:9px 13px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.opt button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+.grp{text-align:left;font-weight:700;font-size:.85rem;color:var(--mute);margin-top:10px}
+.bar{display:flex;align-items:center;gap:8px;font-size:.85rem;margin:4px 0;text-align:left}.bar i{width:84px;font-style:normal}
+.bar div{flex:1;height:9px;border-radius:9px;background:var(--line);overflow:hidden}.bar u{display:block;height:100%;background:linear-gradient(90deg,#7c3aed,#ec4899);transition:width .3s}
+.phone{display:block;margin:6px auto 0;width:150px}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid var(--line);cursor:pointer;padding:0}.sw.on{border-color:var(--acc)}
+.price{font-size:2rem;font-weight:900}.over{color:#dc2626}
+.sl{display:flex;gap:10px;align-items:center;margin:6px 0}.sl i{width:20px;font-style:normal;font-weight:800}.sl input{padding:0}
+.cmp{display:flex;gap:10px;margin:10px 0}.cmp div{flex:1;height:90px;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;text-shadow:0 1px 3px #0008}
+.it{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);text-align:left}.it .n{flex:1}.it small{color:var(--mute);display:block}.it button{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:1.2rem;cursor:pointer}.it .c{width:42px;text-align:center;font-weight:800}
+.bal{position:sticky;top:0;background:var(--card);padding:8px 0;z-index:3}
+.orb{font-size:5rem;transition:font-size .4s;line-height:1.1;min-height:130px;display:flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
 <main>
 <section class="view on" id="home">
 <h1>Play<span>Lab</span></h1>
-<p class="sub">Tiny games and curious tools. Nothing to install, nothing to sign up for.</p>
-<div class="tiles">
-<button class="tile" data-go="reaction"><span class="e">⚡</span><b>Reaction Test</b><small>How fast are your reflexes?</small><br><span class="tag">Fun</span></button>
-<button class="tile" data-go="math"><span class="e">🧮</span><b>Math Sprint</b><small>30 seconds, as many as you can</small><br><span class="tag">Educational</span></button>
-<button class="tile" data-go="facts"><span class="e">🌍</span><b>Mind-Blowers</b><small>True facts that sound fake</small><br><span class="tag">Informative</span></button>
-<button class="tile" data-go="spinner"><span class="e">🎡</span><b>Decision Wheel</b><small>Can’t choose? Let fate do it</small><br><span class="tag">Outside the box</span></button>
-<button class="tile" data-go="days"><span class="e">⏳</span><b>Days Alive</b><small>Your life in numbers</small><br><span class="tag">Informative</span></button>
-</div>
+<p class="sub">Tiny games and curious tools. No sign-up, no install, just tap and play.</p>
+<div class="tiles" id="tiles"></div>
 </section>
-
-<section class="view" id="reaction"><button class="back" data-go="home">← All games</button>
-<div class="panel"><h2>Reaction Test</h2><p class="hint">Click the box when it turns green.</p>
-<div class="zone" id="rz">Click to start</div><div class="best" id="rbest"></div></div></section>
-
-<section class="view" id="math"><button class="back" data-go="home">← All games</button>
-<div class="panel"><h2>Math Sprint</h2><p class="hint">Type the answer and press Enter.</p>
-<div id="mstat" class="hint"></div><div class="q" id="mq">Ready?</div>
-<input type="number" id="ma" inputmode="numeric" disabled placeholder="Answer">
-<p><button class="go" id="mgo">Start</button></p><div class="best" id="mbest"></div></div></section>
-
-<section class="view" id="facts"><button class="back" data-go="home">← All games</button>
-<div class="panel"><h2>Mind-Blowers</h2><div class="fact" id="ft"></div>
-<button class="go" id="fn">Another one</button></div></section>
-
-<section class="view" id="spinner"><button class="back" data-go="home">← All games</button>
-<div class="panel"><h2>Decision Wheel</h2><p class="hint">One option per line.</p>
-<textarea id="opts">Pizza
-Biryani
-Dosa
-Burger</textarea>
-<div id="wheelwrap"><div id="pin">▼</div><canvas id="wheel" width="520" height="520"></canvas></div>
-<button class="go" id="sp">Spin</button><div class="big" id="sres" style="font-size:1.6rem;margin-top:12px"></div></div></section>
-
-<section class="view" id="days"><button class="back" data-go="home">← All games</button>
-<div class="panel"><h2>Days Alive</h2><p class="hint">Enter your birthday.</p>
-<input type="date" id="dob" style="font:inherit;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%;margin-bottom:12px">
-<button class="go" id="dgo">Show me</button><div id="dres" style="margin-top:16px"></div></div></section>
+<div id="host"></div>
 </main>
 <script>
 (function(){
 var $=function(i){return document.getElementById(i)};
-var views=['home','reaction','math','facts','spinner','days'];
-function route(){var h=(location.hash||'#home').slice(1);if(views.indexOf(h)<0)h='home';
-views.forEach(function(v){$(v).classList.toggle('on',v===h)});window.scrollTo(0,0);if(h!=='math')stopMath()}
-window.addEventListener('hashchange',route);
-document.addEventListener('click',function(e){var t=e.target.closest('[data-go]');if(t)location.hash=t.getAttribute('data-go')});
 function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function save(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function fmt(n){return Math.floor(n).toLocaleString('en-IN')}
+var G=[
+['phone','📱','Build Your Dream Phone','Pick every part, watch it come alive','#7c3aed','#ec4899','Create'],
+['reaction','⚡','Reaction Test','How fast are your reflexes?','#f59e0b','#ef4444','Fun'],
+['clicks','👆','Click Speed','Smash it for 5 seconds','#10b981','#06b6d4','Fun'],
+['color','🎨','Color Guess','Match the mystery color by eye','#ec4899','#8b5cf6','Skill'],
+['math','🧮','Math Sprint','30 seconds of mental math','#3b82f6','#6366f1','Learn'],
+['facts','🌍','Mind-Blowers','True facts that sound fake','#14b8a6','#22c55e','Learn'],
+['spinner','🎡','Decision Wheel','Can’t choose? Let fate decide','#f97316','#eab308','Weird'],
+['crore','💸','Spend a Crore','You have ₹1 crore. Make it vanish.','#059669','#84cc16','Fun'],
+['scale','🔭','Space Scale','Slide from an atom to the universe','#1e1b4b','#7c3aed','Learn'],
+['days','⏳','Days Alive','Your life in numbers','#6366f1','#0ea5e9','Learn']];
+var host=$('host'),views={};
+var tiles=$('tiles');
+G.forEach(function(g){
+var b=document.createElement('button');b.className='tile';b.style.setProperty('--c1',g[4]);b.style.setProperty('--c2',g[5]);
+b.innerHTML='<span class="tag">'+g[6]+'</span><span class="e">'+g[1]+'</span><b>'+g[2]+'</b><small>'+g[3]+'</small>';
+b.onclick=function(){location.hash=g[0]};tiles.appendChild(b);
+var s=document.createElement('section');s.className='view';s.id=g[0];
+s.innerHTML='<button class="back">← All games</button><div class="panel"><h2>'+g[1]+' '+g[2]+'</h2><p class="hint">'+g[3]+'</p><div class="body"></div></div>';
+s.querySelector('.back').onclick=function(){location.hash='home'};host.appendChild(s);views[g[0]]=s.querySelector('.body')});
+var timers=[];function clr(){timers.forEach(clearInterval);timers=[]}
+function route(){clr();var h=(location.hash||'#home').slice(1);if(h!=='home'&&!views[h])h='home';
+$('home').classList.toggle('on',h==='home');G.forEach(function(g){$(g[0]).classList.toggle('on',g[0]===h)});window.scrollTo(0,0);
+if(inits[h])inits[h]()}
+window.addEventListener('hashchange',route);
+var inits={};
 
-/* Reaction */
-var rz=$('rz'),rt=null,rs=0,rstate=0;
-function rbest(){var b=load('pl-r');$('rbest').textContent=b?'Your best: '+b+' ms':''}
-rbest();
-rz.onclick=function(){
-if(rstate===0){rstate=1;rz.className='zone wait';rz.textContent='Wait for green…';rt=setTimeout(function(){rstate=2;rz.className='zone now';rz.textContent='CLICK!';rs=performance.now()},1500+Math.random()*2500)}
-else if(rstate===1){clearTimeout(rt);rstate=0;rz.className='zone';rz.textContent='Too early! Click to retry'}
-else{var ms=Math.round(performance.now()-rs);rstate=0;rz.className='zone';rz.textContent=ms+' ms. Click to try again';var b=+load('pl-r')||9999;if(ms<b){save('pl-r',ms)}rbest()}
-};
+/* PHONE */
+var PG=[['Screen',[['LCD',0],['AMOLED 120Hz',6000],['Foldable',25000]]],['Chip',[['Basic',0],['Fast',8000],['Flagship',20000]]],['Camera',[['12 MP',0],['50 MP',5000],['200 MP Pro',14000]]],['Battery',[['4000 mAh',0],['5000 mAh',2500],['7000 mAh',6000]]]];
+var COLS=['#1f2937','#7c3aed','#ec4899','#0ea5e9','#f59e0b'],ps=[0,0,0,0],pc=0,BUDGET=60000;
+inits.phone=function(){
+var b=views.phone;b.innerHTML='';
+var svg=document.createElement('div');b.appendChild(svg);
+var stats=document.createElement('div');b.appendChild(stats);
+var pr=document.createElement('div');b.appendChild(pr);
+PG.forEach(function(g,gi){var t=document.createElement('div');t.className='grp';t.textContent=g[0].toUpperCase();b.appendChild(t);
+var o=document.createElement('div');o.className='opt';
+g[1].forEach(function(x,xi){var bt=document.createElement('button');bt.textContent=x[0]+(x[1]?' +₹'+fmt(x[1]):'');bt.onclick=function(){ps[gi]=xi;draw()};bt.dataset.g=gi;bt.dataset.x=xi;o.appendChild(bt)});b.appendChild(o)});
+var t=document.createElement('div');t.className='grp';t.textContent='COLOR';b.appendChild(t);
+var o=document.createElement('div');o.className='opt';
+COLS.forEach(function(c,i){var s=document.createElement('button');s.className='sw';s.style.background=c;s.dataset.c=i;s.onclick=function(){pc=i;draw()};o.appendChild(s)});b.appendChild(o);
+var v=document.createElement('p');v.style.fontWeight='700';b.appendChild(v);
+function draw(){
+var cam=ps[2]+1,fold=ps[0]===2,col=COLS[pc];
+var dots='';for(var i=0;i<cam;i++)dots+='<circle cx="'+(32+i*0)+'" cy="'+(26+i*17)+'" r="7" fill="#0b0b12" stroke="#fff6" stroke-width="2"/>';
+svg.innerHTML='<svg class="phone" viewBox="0 0 150 280"><rect x="6" y="4" width="138" height="272" rx="26" fill="'+col+'"/><rect x="14" y="12" width="122" height="256" rx="20" fill="#0b0b12"/><rect x="18" y="16" width="114" height="248" rx="16" fill="'+(ps[0]>0?'#1e3a8a':'#334155')+'"/>'+(fold?'<line x1="75" y1="16" x2="75" y2="264" stroke="#0008" stroke-width="3"/>':'')+'<text x="75" y="150" text-anchor="middle" font-size="40">'+(ps[1]===2?'🚀':ps[1]===1?'⚡':'📶')+'</text><g transform="translate(86,10)">'+dots+'</g></svg>';
+var sc=[ps[1]*40+20,ps[2]*40+20,ps[3]*40+20,ps[0]*40+20],nm=['Speed','Camera','Battery','Display'];
+stats.innerHTML='';sc.forEach(function(v,i){var r=document.createElement('div');r.className='bar';r.innerHTML='<i>'+nm[i]+'</i><div><u style="width:'+v+'%"></u></div>';stats.appendChild(r)});
+var total=8000;ps.forEach(function(x,gi){total+=PG[gi][1][x][1]});
+pr.innerHTML='<div class="price '+(total>BUDGET?'over':'')+'">₹'+fmt(total)+'</div><div class="hint">Budget ₹'+fmt(BUDGET)+(total>BUDGET?' (over by ₹'+fmt(total-BUDGET)+')':' (₹'+fmt(BUDGET-total)+' left)')+'</div>';
+var avg=(sc[0]+sc[1]+sc[2]+sc[3])/4;
+v.textContent=total>BUDGET?'Reviewer: “Amazing phone, but your wallet is crying.”':avg>=90?'Reviewer: “A dream phone, and you stayed on budget!”':avg>=60?'Reviewer: “Solid all-rounder. Great value.”':'Reviewer: “Basic but reliable. Treat yourself to an upgrade?”';
+b.querySelectorAll('.opt button').forEach(function(x){if(x.dataset.g!==undefined)x.classList.toggle('on',ps[+x.dataset.g]===+x.dataset.x);if(x.dataset.c!==undefined)x.classList.toggle('on',pc===+x.dataset.c)})}
+draw()};
 
-/* Math */
-var mt=null,mans=0,msc=0,mleft=30;
-function stopMath(){clearInterval(mt);mt=null;$('ma').disabled=true}
-function nextQ(){var a=2+Math.floor(Math.random()*12),b=2+Math.floor(Math.random()*12),o=Math.floor(Math.random()*3);
-if(o===0){mans=a+b;$('mq').textContent=a+' + '+b}else if(o===1){if(b>a){var t=a;a=b;b=t}mans=a-b;$('mq').textContent=a+' − '+b}else{mans=a*b;$('mq').textContent=a+' × '+b}
-$('ma').value='';$('ma').focus()}
-$('mgo').onclick=function(){stopMath();msc=0;mleft=30;$('ma').disabled=false;$('mstat').textContent='Time: 30  Score: 0';nextQ();
-mt=setInterval(function(){mleft--;$('mstat').textContent='Time: '+mleft+'  Score: '+msc;
-if(mleft<=0){stopMath();$('mq').textContent='Score: '+msc;var b=+load('pl-m')||0;if(msc>b)save('pl-m',msc);$('mbest').textContent='Your best: '+Math.max(b,msc);$('mgo').textContent='Play again'}},1000)};
-$('ma').addEventListener('keydown',function(e){if(e.key==='Enter'&&mt&&$('ma').value!==''){if(+$('ma').value===mans)msc++;$('mstat').textContent='Time: '+mleft+'  Score: '+msc;nextQ()}});
-var mb=load('pl-m');if(mb)$('mbest').textContent='Your best: '+mb;
+/* REACTION */
+var rt,rs,rstate;
+inits.reaction=function(){var b=views.reaction;b.innerHTML='<div class="zone">Click to start</div><div class="best"></div>';
+var z=b.querySelector('.zone'),bs=b.querySelector('.best');rstate=0;
+function best(){var v=load('pl-r');bs.textContent=v?'Your best: '+v+' ms':''}best();
+z.onclick=function(){
+if(rstate===0){rstate=1;z.className='zone wait';z.textContent='Wait for green…';rt=setTimeout(function(){rstate=2;z.className='zone now';z.textContent='CLICK!';rs=performance.now()},1500+Math.random()*2500)}
+else if(rstate===1){clearTimeout(rt);rstate=0;z.className='zone';z.textContent='Too early! Click to retry'}
+else{var ms=Math.round(performance.now()-rs);rstate=0;z.className='zone';z.textContent=ms+' ms. Click to go again';if(ms<(+load('pl-r')||9999))save('pl-r',ms);best()}}};
 
-/* Facts */
-var F=['Honey found in ancient Egyptian tombs, around 3,000 years old, was still edible. Properly sealed honey barely spoils.',
-'Octopuses have three hearts and blue blood.',
-'A day on Venus (one full spin) lasts longer than its year. It takes about 243 Earth days to rotate but only about 225 to orbit the Sun.',
-'Botanically, bananas are berries, but strawberries are not.',
-'Oxford University was already teaching before the Aztec city of Tenochtitlan was founded.',
-'Sunlight takes about 8 minutes and 20 seconds to reach Earth.',
-'Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid.',
-'Sharks are older than trees. They have existed for over 400 million years.',
-'Wombats produce cube-shaped droppings.',
-'Tamil is one of the world’s oldest living languages, with literature going back over 2,000 years.',
-'Your body contains roughly 37 trillion cells.'];
-var fi=-1;function nf(){var n;do{n=Math.floor(Math.random()*F.length)}while(n===fi);fi=n;$('ft').textContent=F[n]}
-$('fn').onclick=nf;nf();
+/* CLICKS */
+inits.clicks=function(){var b=views.clicks;b.innerHTML='<div class="big">0</div><p class="hint">Hit the button to begin the 5-second timer.</p><button class="go" style="font-size:1.4rem;padding:26px 46px">TAP!</button><div class="best"></div>';
+var n=0,run=false,left=5,big=b.querySelector('.big'),h=b.querySelector('.hint'),bs=b.querySelector('.best'),btn=b.querySelector('button');
+var bb=load('pl-c');if(bb)bs.textContent='Your best: '+bb+' clicks/sec';
+btn.onclick=function(){if(!run){run=true;n=0;left=5;var st=Date.now();
+var t=setInterval(function(){left=Math.max(0,5-(Date.now()-st)/1000);h.textContent=left.toFixed(1)+'s left';
+if(left<=0){clearInterval(t);run=false;var cps=(n/5).toFixed(1);h.textContent='Result: '+cps+' clicks per second. Tap to retry.';if(+cps>(+load('pl-c')||0)){save('pl-c',cps)}bs.textContent='Your best: '+load('pl-c')+' clicks/sec'}},50);timers.push(t)}
+if(run){n++;big.textContent=n}}};
 
-/* Wheel */
-var wc=$('wheel'),cx=wc.getContext('2d'),rot=0,spinning=false;
-var COL=['#6d28d9','#0ea5e9','#f59e0b','#10b981','#ef4444','#ec4899','#14b8a6','#8b5cf6'];
-function opts(){return $('opts').value.split('\n').map(function(s){return s.trim()}).filter(Boolean).slice(0,12)}
-function draw(){var o=opts(),n=o.length||1,r=260;cx.clearRect(0,0,520,520);
-for(var i=0;i<n;i++){var a0=i*2*Math.PI/n-Math.PI/2,a1=(i+1)*2*Math.PI/n-Math.PI/2;
-cx.beginPath();cx.moveTo(r,r);cx.arc(r,r,r-4,a0,a1);cx.fillStyle=COL[i%COL.length];cx.fill();
-cx.save();cx.translate(r,r);cx.rotate((a0+a1)/2);cx.fillStyle='#fff';cx.font='bold 26px system-ui,sans-serif';cx.textAlign='right';cx.fillText((o[i]||'').slice(0,14),r-24,9);cx.restore()}}
-$('opts').addEventListener('input',draw);draw();
-$('sp').onclick=function(){var o=opts();if(o.length<2||spinning)return;spinning=true;$('sres').textContent='';
-var n=o.length,win=Math.floor(Math.random()*n),seg=360/n;
-var target=360*6+(360-(win*seg+seg/2));rot=Math.ceil(rot/360)*360+target;
-wc.style.transform='rotate('+rot+'deg)';
-setTimeout(function(){spinning=false;$('sres').textContent='🎉 '+o[win]},4100)};
+/* COLOR */
+inits.color=function(){var b=views.color;var T,rd=0;
+b.innerHTML='<div class="cmp"><div id="ct">Target</div><div id="cm">Yours</div></div><div class="sl"><i style="color:#ef4444">R</i><input type="range" min="0" max="255" value="128"></div><div class="sl"><i style="color:#16a34a">G</i><input type="range" min="0" max="255" value="128"></div><div class="sl"><i style="color:#3b82f6">B</i><input type="range" min="0" max="255" value="128"></div><p><button class="go">Lock it in</button></p><div class="big" style="font-size:1.8rem"></div>';
+var r=b.querySelectorAll('input'),ct=b.querySelector('#ct'),cm=b.querySelector('#cm'),res=b.querySelector('.big');
+function mine(){return [+r[0].value,+r[1].value,+r[2].value]}
+function upd(){cm.style.background='rgb('+mine().join(',')+')'}
+function nw(){T=[Math.floor(Math.random()*256),Math.floor(Math.random()*256),Math.floor(Math.random()*256)];ct.style.background='rgb('+T.join(',')+')';ct.textContent='Target';cm.textContent='Yours'}
+r.forEach(function(x){x.oninput=upd});nw();upd();
+b.querySelector('.go').onclick=function(){if(rd){rd=0;res.textContent='';nw();return}
+var m=mine(),d=Math.sqrt(Math.pow(m[0]-T[0],2)+Math.pow(m[1]-T[1],2)+Math.pow(m[2]-T[2],2));
+var s=Math.max(0,Math.round(100-d/441*220));res.textContent=s+'/100'+(s>90?' 🎯':s>70?' 👏':' 😅');rd=1;this.textContent='Next color';
+this.onclick=null;var self=this;self.onclick=function(){rd=0;res.textContent='';nw();self.textContent='Lock it in';self.onclick=null;inits.color()}}};
 
-/* Days alive */
-$('dgo').onclick=function(){var v=$('dob').value;if(!v)return;var p=v.split('-'),b=new Date(+p[0],+p[1]-1,+p[2]),d=(Date.now()-b)/86400000;
-if(d<0)return;var nx=Math.ceil((d+1)/1000)*1000;
-$('dres').innerHTML='';var big=document.createElement('div');big.className='big';big.textContent=Math.floor(d).toLocaleString('en-US')+' days';
-var s=document.createElement('p');s.className='hint';s.textContent='About '+Math.floor(d*24*60*75).toLocaleString('en-US')+' heartbeats and '+Math.floor(d/29.53)+' full moons so far. Your '+nx.toLocaleString('en-US')+'th day is in '+(nx-Math.floor(d))+' days.';
-$('dres').appendChild(big);$('dres').appendChild(s)};
-route();
-})();
-</script>
-</body>
-</html>
+/* MATH */
+inits.math=function(){var b=views.math;b.innerHTML='<div class="hint"></div><div class="big">Ready?</div><input type="number" inputmode="numeric" disabled placeholder="Answer"><p><button class="go">Start</button></p><div class="best"></div>';
+var st=b.querySelector('.hint'),q=b.querySelector('.big'),a=b.querySelector('input'),go=b.querySelector('button'),bs=b.querySelector('.best');
+var ans=0,sc=0,left=30,t=null;var bb=load('pl-m');if(bb)bs.textContent='Your best: '+bb;
+function nq(){var x=2+Math.floor(Math.random()*12),y=2+Math.floor(Math.random()*12),o=Math.floor(Math.random()*3);
+if(o===0){ans=x+y;q.textContent=x+' + '+y}else if(o===1){if(y>x){var z=x;x=y;y=z}ans=x-y;q.textContent=x+' − '+y}else{ans=x*y;q.textContent=x+' × '+y}a.value='';a.focus()}
+go.onclick=function(){clearInterval(t);sc=0;left=30;a.disabled=false;st.textContent='Time: 30   Score: 0';nq();
+t=setInterval(function(){left--;st.textContent='Time: '+left+'   Score: '+sc;if(left<=0){clearInterval(t);a.disabled=true;q.textContent='Score: '+sc;var p=+load('pl-m')||0;if(sc>p)save('pl-m',sc);bs.textContent='Your best: '+Math.max(p,sc);go.textContent='Play again'}},1000);timers.push(t)};
+a.onkeydown=function(e){if(e.key==='Enter'&&a.value!==''&&left>0){if(+a.value===ans)sc++;st.textContent='Time: '+left+'   Score: '+sc;nq()}}};
+
+/* FACTS */
+var F=[['🍯','Honey found in ancient Egyptian tombs, around 3,000 years old, was still edible.'],['🐙','Octopuses have three
